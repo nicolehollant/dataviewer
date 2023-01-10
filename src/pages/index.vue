@@ -3,7 +3,7 @@
     fixed-header
     :classes="{
       header: {
-        extend: 'text-sm sm:text-xl md:text-2xl bg-black/20 backdrop-blur border-b border-neutral-800/60 shadow',
+        extend: 'text-base sm:text-xl md:text-2xl bg-black/20 backdrop-blur border-b border-neutral-800/60 shadow',
       },
       footer: {
         extend: 'hidden',
@@ -49,7 +49,7 @@
           @update:model-value="processFileContent"
           read-as="array-buffer"
           :classes="{
-            dropZone: { extend: 'w-full h-full relative overflow-hidden' },
+            dropZone: { extend: 'w-full h-full relative overflow-hidden sm:!p-8 !p-4' },
             draggedOver: 'bg-gradient-to-br transition duration-300 bg-green-900 from-neutral-800',
             default: 'bg-gradient-to-br transition duration-300 bg-neutral-900 from-neutral-800',
           }"
@@ -59,9 +59,9 @@
           <template #dropzone="{ draggedOver }">
             <div class="flex flex-col items-center justify-center gap-2 text-center h-full relative z-20">
               <div
-                class="max-w-2xl flex flex-col gap-2 items-center justify-center px-16 py-8 rounded-2xl bg-zinc-800/40 shadow-lg border border-black/20 backdrop-blur-md"
+                class="max-w-2xl flex flex-col gap-2 items-center justify-center px-4 sm:px-16 py-8 rounded-2xl bg-zinc-800/40 shadow-lg border border-black/20 backdrop-blur-md"
               >
-                <p class="text-xl leading-relaxed">
+                <p class="text-sm text-neutral-200 sm:text-white sm:text-xl leading-relaxed">
                   Drag and drop to upload a spreadsheet to launch configurable viewer
                 </p>
                 <p class="text-xs text-neutral-500">or</p>

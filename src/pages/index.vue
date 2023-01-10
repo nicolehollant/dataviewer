@@ -3,7 +3,7 @@
     fixed-header
     :classes="{
       header: {
-        extend: 'text-2xl bg-black/20 backdrop-blur border-b border-neutral-800/60 shadow',
+        extend: 'text-sm sm:text-xl md:text-2xl bg-black/20 backdrop-blur border-b border-neutral-800/60 shadow',
       },
       footer: {
         extend: 'hidden',
@@ -11,14 +11,16 @@
     }"
   >
     <template #header>
-      <div class="flex items-center gap-3">
-        <img src="@/assets/logo.png" class="w-14 h-14" alt="" />
+      <div class="flex items-center gap-1.5 sm:gap-3">
+        <img src="@/assets/logo.png" class="w-8 h-8 sm:w-14 sm:h-14" alt="" />
         <p class="tracking-wide">Dataviewer</p>
       </div>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-1.5 sm:gap-3">
         <SenpSelect
-          :classes="{ input: { extend: 'text-sm !border-neutral-800 !bg-transparent' } }"
+          :classes="{
+            input: { extend: 'text-xs sm:text-sm !border-neutral-800 bg-neutral-900/75 sm:!bg-transparent' },
+          }"
           v-if="state.sheetNames.length > 1"
           :model-value="state.activeSheetIndex + ''"
           @update:model-value="
@@ -30,10 +32,11 @@
           :options="state.sheetNames.map((sheet, i) => ({ value: i + '', label: sheet }))"
         ></SenpSelect>
         <a
+          :class="{ 'hidden sm:flex': state.sheetNames.length > 1, 'flex text-xl': state.sheetNames.length <= 1 }"
           href="https://github.com/nicolehollant/dataviewer"
           target="_blank"
           rel="noopener noreferrer"
-          class="h-max flex items-center text-neutral-200 hover:text-blue-400 transition"
+          class="h-max items-center text-neutral-200 hover:text-blue-400 transition"
           ><Icon name="mdi:github"></Icon
         ></a>
       </div>
@@ -96,10 +99,10 @@
       ></SenpDataView>
       <section v-else class="grid md:grid-cols-2 gap-4 md:gap-8">
         <div
-          class="px-4 py-2 md:px-6 md:py-4 rounded-lg grid gap-4 bg-neutral-900 border border-neutral-800"
+          class="px-4 py-2 md:px-6 md:py-4 rounded-lg grid gap-2 sm:gap-4 bg-neutral-900 border border-neutral-800"
           v-for="(sheet, i) in state.sheetNames"
         >
-          <h3 class="text-xl">{{ sheet }}</h3>
+          <h3 class="text-base sm:text-xl">{{ sheet }}</h3>
           <div class="relative h-64 text-xs overflow-hidden rounded-lg bg-neutral-800/80">
             <DataviewPreview :value="state.sheetPreviews[i]" class="overflow-auto h-full"></DataviewPreview>
             <p
@@ -108,7 +111,9 @@
               preview
             </p>
           </div>
-          <SenpButton @click="() => (state.activeSheetIndex = i)">Select Sheet {{ i + 1 }}</SenpButton>
+          <SenpButton class="text-sm sm:text-base" @click="() => (state.activeSheetIndex = i)"
+            >Select Sheet {{ i + 1 }}</SenpButton
+          >
         </div>
       </section>
     </template>
@@ -135,25 +140,24 @@ watch(
   () => {
     const _activeSheetIndex = route.query.sheetIndex != null ? Number(route.query.sheetIndex) : null
     if (_activeSheetIndex != null && route.query?.dv) {
-      console.log('Setting initial settings...')
       state.sheetSettings[_activeSheetIndex].initialSettings = route.query.dv
     }
     if (_activeSheetIndex != null && route.query?.f) {
-      console.log('Setting initial filters...')
       state.sheetSettings[_activeSheetIndex].initialFilters = route.query.f
     }
     if (_activeSheetIndex != null && route.query?.s) {
-      console.log('Setting initial sorters...')
       state.sheetSettings[_activeSheetIndex].initialSorters = route.query.s
     }
     if (_activeSheetIndex != null && route.query?.st) {
-      console.log('Setting initial state...')
       state.sheetSettings[_activeSheetIndex].initialState = route.query.st
     }
     if (route.query?.sheetIndex) {
       nextTick(() => {
-        console.log('Setting active sheet index...')
         state.activeSheetIndex = Number(route.query.sheetIndex)
+      })
+    } else {
+      nextTick(() => {
+        state.activeSheetIndex = undefined
       })
     }
   },

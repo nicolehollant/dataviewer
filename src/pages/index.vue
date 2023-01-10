@@ -111,9 +111,9 @@
               preview
             </p>
           </div>
-          <SenpButton class="text-sm sm:text-base" @click="() => (state.activeSheetIndex = i)"
-            >Select Sheet {{ i + 1 }}</SenpButton
-          >
+          <NuxtLink custom v-slot="{ navigate }" :to="{ path: '', query: { sheetIndex: i } }">
+            <SenpButton class="text-sm sm:text-base" @click="navigate">Select Sheet {{ i + 1 }}</SenpButton>
+          </NuxtLink>
         </div>
       </section>
     </template>
